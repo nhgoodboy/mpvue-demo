@@ -1,11 +1,10 @@
 // import wx from 'wx'
-var Fly = require('flyio/dist/npm/wx')
-// var fly=new Fly
+import Fly from 'flyio/dist/npm/wx'
 
 const request = new Fly()
 
 request.config.timeout = 10 * 1000
-request.config.baseURL = 'http://127.0.0.1:8084'
+request.config.baseURL = 'http://localhost:8084'
 
 request.interceptors.request.use((request) => {
   // wx.showLoading({ title: '拼命加载中...' })
