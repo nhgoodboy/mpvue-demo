@@ -4,8 +4,7 @@ import App from './index'
 // import VueAxios from 'vue-axios'
 // import MpvueRouterPatch from 'mpvue-router-patch'
 
-import Api from '../../../config/api.js';
-Vue.prototype.$api = Api;
+// Vue.prototype.$api = Api;
 
 const app = new Vue(App);
 app.$mount();

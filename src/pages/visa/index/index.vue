@@ -32,29 +32,30 @@
 </template>
 
 <script>
+  import { getMovieData } from '@/utils/api'
 
   export default {
-    data() {
+    data () {
       return {
-        response: "123",
+        response: '123',
         places: {
           Europe: {
-            title: "Europe"
+            title: 'Europe'
           },
           Asia: {
-            title: "Asia"
+            title: 'Asia'
           },
           America: {
-            title: "America"
+            title: 'America'
           },
           Africa: {
-            title: "Africa"
+            title: 'Africa'
           },
           Oceania: {
-            title: "Oceania"
+            title: 'Oceania'
           },
           HK_MC_TW: {
-            title: "港澳台"
+            title: '港澳台'
           }
         },
         hot_visa: [{title: 1}, {title: 2}, {title: 3}, {title: 4}, {title: 5}]
@@ -62,36 +63,38 @@
     },
 
     methods: {
-      openSuccess() {
+      openSuccess () {
         wx.navigateTo({
           url: '../counter/main'
         })
       },
 
-      goTo(title) {
+      goTo (title) {
         wx.navigateTo({
           url: '../../counter/main?title=' + title
         })
         // this.$router.push('/pages/counter/main')
       },
 
-      request() {
+      request () {
         // this.axios.get("index").then((response) => {
         //   this.response = response;
         // })
 
-        this.$api.get('index', {
-
-        }, response => {
-          if (response.status >= 200 && response.status < 300) {
-            console.log(response.data);  //请求成功，response为成功信息参数
-          } else {
-            console.log(response.message);  //请求失败，response为失败信息
-          }
-        });
+        // this.$api.get('index', {
+        //
+        // }, response => {
+        //   if (response.status >= 200 && response.status < 300) {
+        //     console.log(response.data) // 请求成功，response为成功信息参数
+        //   } else {
+        //     console.log(response.message) // 请求失败，response为失败信息
+        //   }
+        // })
+        getMovieData().then(response =>{
+          this.response = response
+        })
       }
     }
-
 
   }
 </script>
