@@ -33,8 +33,12 @@
 
 <script>
   import { getMovieData } from '@/utils/api'
+  import Vue from 'vue'
+  import MpvueRouterPatch from 'mpvue-router-patch'
 
-  export default {
+  Vue.use(MpvueRouterPatch)
+
+export default {
     data () {
       return {
         response: '123',
@@ -70,15 +74,16 @@
       },
 
       goTo (title) {
-        wx.navigateTo({
-          url: '../../counter/main?title=' + title
-        })
-        // this.$router.push('/pages/counter/main')
+        // wx.navigateTo({
+        //   url: '../../counter/main?title=' + title
+        // })
+        this.$router.push('/pages/counter/main')
+        // Vue.$router.app
       },
 
       request () {
-        // this.axios.get("index").then((response) => {
-        //   this.response = response;
+        // axios.get('http://localhost:8084/girl/index').then((response) => {
+        //   this.response = response
         // })
 
         // this.$api.get('index', {
@@ -90,7 +95,7 @@
         //     console.log(response.message) // 请求失败，response为失败信息
         //   }
         // })
-        getMovieData().then(response =>{
+        getMovieData().then(response => {
           this.response = response
         })
       }
