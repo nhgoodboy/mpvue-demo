@@ -27,81 +27,124 @@
     </list>
 
     <div class="" @click="request">发送请求</div>
-    <text>{{response}}</text>
+    <div class="" @click="request">接收：{{movies.a}}</div>
+    <text>{{response}}zxczxc</text>
+    <img class="image" src="../../../static/images/test.png"/>
+    <img class="image" :src="response"/>
+
+    <swiper :indicator-dots="true" :autoplay="true" :interval="1000" :duration="1000">
+      <swiper-item v-for="(item, index) in hot_visa" :key="index">
+        <image class="swiper-item-image" :src="response" mode="aspectFill"/>
+      </swiper-item>
+    </swiper>
   </div>
 </template>
 
 <script>
-  import { getMovieData } from '@/utils/api'
-  import Vue from 'vue'
-  import MpvueRouterPatch from 'mpvue-router-patch'
+  import { getMovieData, getBoardData } from "@/utils/api";
+  import { baseURL } from "@/utils/request";
+  import Vue from "vue";
+  import MpvueRouterPatch from "mpvue-router-patch";
 
-  Vue.use(MpvueRouterPatch)
+  import { getStorage, setStorage } from "@/utils/wechat";
 
-export default {
-    data () {
+  const LAST_SPLASH_DATA = "LAST_SPLASH_DATA";
+  Vue.use(MpvueRouterPatch);
+
+  export default {
+    data() {
       return {
-        response: '123',
+        movies: {},
+        response: baseURL + "/images/test-copy.png",
         places: {
           Europe: {
-            title: 'Europe'
+            title: "Europe"
           },
           Asia: {
-            title: 'Asia'
+            title: "Asia"
           },
           America: {
-            title: 'America'
+            title: "America"
           },
           Africa: {
-            title: 'Africa'
+            title: "Africa"
           },
           Oceania: {
-            title: 'Oceania'
+            title: "Oceania"
           },
           HK_MC_TW: {
-            title: '港澳台'
+            title: "港澳台"
           }
         },
-        hot_visa: [{title: 1}, {title: 2}, {title: 3}, {title: 4}, {title: 5}]
-      }
+        hot_visa: [{ title: 1, imgPath: "asd" }, { title: 2 }, { title: 3 }, { title: 4 }, { title: 5 }]
+      };
+    },
+
+    mounted() {
+      this.getInitData();
     },
 
     methods: {
-      openSuccess () {
-        wx.navigateTo({
-          url: '../counter/main'
-        })
+      async getCache() {
+        try {
+          let res = await getStorage(LAST_SPLASH_DATA);
+          const { movies, expires } = res.data;
+          // 有缓存，判断是否过期
+          if (movies && expires > Date.now()) {
+            return res.data;
+          }
+          // 已经过期
+          console.log("uncached");
+          return null;
+        } catch (error) {
+          return null;
+        }
       },
 
-      goTo (title) {
+      handleStart() {
+        // TODO: 访问历史的问题
+        wx.switchTab({
+          url: "../board/main"
+        });
+      },
+
+      async getInitData() {
+        // let cache = await this.getCache()
+        // if (cache) {
+        //   this.movies = cache.movies
+        //   return
+        // }
+        console.info("debug1");
+        let data = await getBoardData({ board: "coming_soon", page: 1, count: 3 });
+        this.movies = data;
+        await setStorage(LAST_SPLASH_DATA, {
+          movies: data,
+          expires: Date.now() + 1 * 24 * 60 * 60 * 1000
+        });
+      },
+
+      openSuccess() {
+        wx.navigateTo({
+          url: "../counter/main"
+        });
+      },
+
+      goTo(title) {
         // wx.navigateTo({
         //   url: '../../counter/main?title=' + title
         // })
-        this.$router.push('/pages/counter/main')
+        this.$router.push("/pages/counter/main");
         // Vue.$router.app
       },
 
-      request () {
-        // axios.get('http://localhost:8084/girl/index').then((response) => {
-        //   this.response = response
-        // })
-
-        // this.$api.get('index', {
-        //
-        // }, response => {
-        //   if (response.status >= 200 && response.status < 300) {
-        //     console.log(response.data) // 请求成功，response为成功信息参数
-        //   } else {
-        //     console.log(response.message) // 请求失败，response为失败信息
-        //   }
-        // })
+      request() {
         getMovieData().then(response => {
-          this.response = response
-        })
+          this.response = response;
+        });
       }
     }
 
-  }
+  };
 </script>
 
-<style scoped src="./index.scss"/>
+<style scoped src="./index.scss"></style>
