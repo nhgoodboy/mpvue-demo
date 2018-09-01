@@ -4,7 +4,9 @@
     "pages/logs/main",
     "pages/counter/main",
     "pages/test/main",
-    "pages/visa/index/main"
+    "pages/visa/index/main",
+    "pages/visa/list/main",
+    "pages/visa/detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

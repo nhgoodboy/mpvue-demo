@@ -37,6 +37,8 @@
         <image class="swiper-item-image" :src="response" mode="aspectFill"/>
       </swiper-item>
     </swiper>
+
+
   </div>
 </template>
 
@@ -54,6 +56,7 @@
   export default {
     data() {
       return {
+        lists: [],
         movies: {},
         response: baseURL + "/images/test-copy.png",
         places: {
@@ -81,7 +84,7 @@
     },
 
     mounted() {
-      this.getInitData();
+      // this.getInitData();
     },
 
     methods: {
@@ -133,7 +136,7 @@
         // wx.navigateTo({
         //   url: '../../counter/main?title=' + title
         // })
-        this.$router.push("/pages/counter/main");
+        this.$router.push("/pages/visa/list/main");
         // Vue.$router.app
       },
 
